@@ -2,7 +2,6 @@ CREATE DATABASE projetoEcommerce;
 
 use projetoEcommerce;
 
-
 CREATE TABLE cliente (
   idCliente INT UNSIGNED  AUTO_INCREMENT PRIMARY KEY,
   CPF VARCHAR(11)  NULL,
@@ -12,12 +11,14 @@ CREATE TABLE cliente (
   CEP VARCHAR(45) NOT NULL,
   Email VARCHAR(45) NOT NULL,
   Telefone VARCHAR(45) NOT NULL,
+  Tipo ENUM('PESSOA FISICA', 'PESSOA JURIDICA') DEFAULT 'PESSOA FISICA',
   CONSTRAINT unique_CPF UNIQUE(CPF),
   CONSTRAINT unique_CNPJ UNIQUE(CNPJ)
   );
   
 CREATE TABLE produto(
   idProduto INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  Nome VARCHAR(45),
   Categoria ENUM('ELETRONICOS','VESTIMENTAS','BRINQUEDOS', 'ALIMENTOS', 'MOVEIS') NOT NULL
   );
   
@@ -26,6 +27,7 @@ CREATE TABLE produto(
   idPedido INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   StatusPedido ENUM('CANCELADO', 'CONFIRMADO', 'EM PROCESSAMENTO') DEFAULT 'EM PROCESSAMENTO',
   Cliente_idCliente INT UNSIGNED NOT NULL,  
+  dataPedido DATETIME NOT NULL,
   CONSTRAINT fk_Cliente_idCliente FOREIGN KEY (Cliente_idCliente) REFERENCES cliente(idCliente)
     );
     
@@ -42,7 +44,8 @@ CREATE TABLE estoque(
   idEstoque INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   CEP VARCHAR(45) NULL,
   Telefone VARCHAR(15) NULL,
-  Email VARCHAR(20) NULL
+  Email VARCHAR(20) NULL,
+  QuantidadeTotal INT UNSIGNED NOT NULL
  );
  
  CREATE TABLE fornecedor(
@@ -91,6 +94,7 @@ CREATE TABLE vendedor_has_produto(
     Produto_idProduto INT UNSIGNED,
     Quantidade INT NOT NULL,
     PRIMARY KEY (Fornecedor_idFornecedor, Produto_idProduto),
+    dataEntrega DATETIME NOT NULL,
     CONSTRAINT fk_Fornecedor_idFornecedor FOREIGN KEY (Fornecedor_idFornecedor) REFERENCES fornecedor(idFornecedor),
     CONSTRAINT fk3_Produto_idProduto FOREIGN KEY (Produto_idProduto) REFERENCES produto(idProduto)
   );
