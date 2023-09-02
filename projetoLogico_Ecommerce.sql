@@ -2,6 +2,7 @@ CREATE DATABASE projetoEcommerce;
 
 use projetoEcommerce;
 
+
 CREATE TABLE cliente (
   idCliente INT UNSIGNED  AUTO_INCREMENT PRIMARY KEY,
   CPF VARCHAR(11)  NULL,
@@ -19,6 +20,7 @@ CREATE TABLE cliente (
 CREATE TABLE produto(
   idProduto INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   Nome VARCHAR(45),
+  Preco FLOAT DEFAULT 0.0,
   Categoria ENUM('ELETRONICOS','VESTIMENTAS','BRINQUEDOS', 'ALIMENTOS', 'MOVEIS') NOT NULL
   );
   
@@ -107,3 +109,16 @@ CREATE TABLE vendedor_has_produto(
         CONSTRAINT fk4_Produto_idProduto FOREIGN KEY (Produto_idProduto) REFERENCES produto(idProduto),
         CONSTRAINT fk_Estoque_idEstoque FOREIGN KEY (Estoque_idEstoque) REFERENCES estoque(idEstoque)
   );
+  
+  
+INSERT INTO cliente (nome, cpf, CEP, email, telefone, tipo) VALUES ('João da Silva', '12345678900', '00000000','joao.silva@email.com', '11 9999-9999', 'PESSOA FISICA');
+INSERT INTO produto (categoria, nome, preco) VALUES ('Eletrônicos', 'Smartphone Samsung Galaxy S23', 5999.99);
+INSERT INTO pedido (statusPedido, Cliente_idCliente, dataPedido) VALUES ('CONFIRMADO', 1, '2023-07-20');
+INSERT INTO pagamento (tipoPagamento, valor, pagamento, Pedido_idPedido) VALUES ('CARTÃO', 5999.99, 1, 1);
+
+SELECT * FROM cliente;
+SELECT * FROM produto;
+SELECT * FROM pedido WHERE idPedido = 1;
+SELECT * FROM produto WHERE categoria = 'Eletrônicos';
+SELECT * FROM cliente WHERE nome = 'João da Silva';
+SELECT * FROM pedido WHERE statusPedido = 'CONFIRMADO';
